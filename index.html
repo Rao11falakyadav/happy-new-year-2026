@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year 2026!</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+        font-family: 'Pacifico', cursive;
+        color: #fff;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 4rem;
+        margin: 0.5em 0;
+        background: linear-gradient(90deg, #ff6ec7, #ffde7d, #6effa1);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: shimmer 3s infinite linear, bounce 2s infinite;
+    }
+
+    p {
+        font-size: 1.5rem;
+        margin: 0.5em 0;
+        animation: fadeIn 3s ease-in-out;
+    }
+
+    a {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 25px;
+        background: #fff;
+        color: #203a43;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 50px;
+        transition: 0.3s;
+        animation: pulse 2s infinite;
+    }
+
+    a:hover {
+        background: #ff6ec7;
+        color: #fff;
+        transform: scale(1.2);
+    }
+
+    @keyframes shimmer {
+        0% {background-position: -500px 0;}
+        100% {background-position: 500px 0;}
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-25px); }
+        60% { transform: translateY(-15px); }
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    /* Confetti */
+    .confetti {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #fff;
+        opacity: 0.8;
+        top: -10px;
+        border-radius: 50%;
+        animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    /* Stars */
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+        0% { opacity: 0.2; transform: scale(0.5); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Fireworks canvas */
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+</style>
+</head>
+<body>
+<h1>🎉 Happy New Year 2026! 🎉</h1>
+<p>Warm wishes from <strong>Rao Falak Yadav</strong></p>
+<a href="https://www.swapifhy.com" target="_blank">Visit My Website</a>
+
+<!-- Confetti -->
+<script>
+const colors = ['#ff0a54','#ff477e','#ff7096','#ff85a1','#fbb1b1','#f9bec7','#f7cad0','#fae0e4','#c0d6df','#89b0ae'];
+for(let i = 0; i < 120; i++) {
+    let confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * window.innerWidth + 'px';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.width = confetti.style.height = (Math.random()*10 + 5) + 'px';
+    confetti.style.animationDuration = (Math.random()*5 + 3) + 's';
+    confetti.style.animationDelay = Math.random() * 5 + 's';
+    document.body.appendChild(confetti);
+}
+
+// Stars
+for(let i = 0; i < 100; i++) {
+    let star = document.createElement('div');
+    star.classList.add('star');
+    star.style.top = Math.random() * window.innerHeight + 'px';
+    star.style.left = Math.random() * window.innerWidth + 'px';
+    star.style.animationDuration = (Math.random()*3 + 1) + 's';
+    document.body.appendChild(star);
+}
+</script>
+
+<!-- Fireworks -->
+<canvas id="fireworks"></canvas>
+<script>
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Firework {
+    constructor(){
+        this.x = Math.random()*canvas.width;
+        this.y = canvas.height;
+        this.radius = Math.random()*2 + 1;
+        this.color = colors[Math.floor(Math.random()*colors.length)];
+        this.speedY = -(Math.random()*7 + 3);
+        this.particles = [];
+    }
+    update(){
+        this.y += this.speedY;
+        if(this.y < Math.random()*canvas.height/2){
+            for(let i=0; i<30; i++){
+                this.particles.push({
+                    x: this.x,
+                    y: this.y,
+                    vx: (Math.random()-0.5)*5,
+                    vy: (Math.random()-0.5)*5,
+                    alpha: 1,
+                    color: colors[Math.floor(Math.random()*colors.length)]
+                });
+            }
+            this.y = canvas.height + 10; // reset
+        }
+    }
+    draw(){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+let fireworks = [];
+for(let i=0;i<5;i++) fireworks.push(new Firework());
+
+function animate(){
+    ctx.fillStyle = 'rgba(15,32,39,0.2)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    fireworks.forEach(fw => {
+        fw.update();
+        fw.draw();
+        fw.particles.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.alpha -= 0.02;
+            if(p.alpha <=0) fw.particles.splice(i,1);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,2,0,Math.PI*2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        });
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>
